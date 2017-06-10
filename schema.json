@@ -1,0 +1,9 @@
+{
+  "user" : {
+    "uid" : "integer",
+    "username": "text",
+    "firstname": "text",
+    "lastname": "text",
+    "created": "date"
+  }
+}
