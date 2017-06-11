@@ -1,0 +1,22 @@
+{
+  "name": "json-relation-sql-model",
+  "version": "1.0.0",
+  "description": "todo: Better name",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Scionar/json-relation-sql-model.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Scionar/json-relation-sql-model/issues"
+  },
+  "homepage": "https://github.com/Scionar/json-relation-sql-model#readme",
+  "dependencies": {
+    "pg": "^6.2.4"
+  }
+}
