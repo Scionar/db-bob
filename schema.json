@@ -1,9 +1,13 @@
 {
-  "user" : {
+  "account" : {
     "uid" : "integer",
     "username": "text",
     "firstname": "text",
     "lastname": "text",
     "created": "date"
+  },
+  "posts" : {
+    "id" : "integer",
+    "content" : "text"
   }
 }
