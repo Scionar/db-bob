@@ -4,7 +4,8 @@
     "username": "text",
     "firstname": "text",
     "lastname": "text",
-    "created": "date"
+    "created": "date",
+    "#primary_key" : ["uid", "created"]
   },
   "posts" : {
     "id" : "integer",

@@ -30,20 +30,31 @@ Meow.prototype.createTables = function createTables() {
   const client = this.client;
   let query = null;
 
+  const validContrains = [
+    '#primary_key',
+  ];
+
+  // First level of JSON are tables.
   Object.keys(schema).forEach((tableKey) => {
-    let queryString = `CREATE TABLE IF NOT EXISTS ${tableKey} (`;
+    const tableItems = [];
 
-    Object.keys(schema[tableKey]).forEach((fieldKey, fieldIndex) => {
-      let fieldQuery = `${fieldKey} ${schema[tableKey][fieldKey]}`;
-
-      // Do not add comma after last item.
-      if (fieldIndex < (Object.keys(schema[tableKey]).length - 1)) {
-        fieldQuery += ', ';
+    // Second level of JSON is field definitions.
+    Object.keys(schema[tableKey]).forEach((fieldKey) => {
+      // Check if key is a constrain.
+      if (fieldKey[0] === '#') {
+        if (validContrains.indexOf(fieldKey)) { return; } // If not valid contrain, pass iteration.
+        switch (fieldKey) {
+          case '#primary_key':
+            tableItems.push(`PRIMARY KEY (${schema[tableKey][fieldKey].join(', ')})`);
+            break;
+          default:
+        }
+      } else {
+        tableItems.push(`${fieldKey} ${schema[tableKey][fieldKey]}`);
       }
-      queryString += fieldQuery;
     });
 
-    queryString += ')';
+    const queryString = `CREATE TABLE IF NOT EXISTS ${tableKey} (${tableItems.join(', ')})`;
     console.log(queryString);
     query = client.query(queryString);
   });
