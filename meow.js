@@ -1,5 +1,6 @@
 const fs = require('fs');
 const pg = require('pg');
+const console = require('console');
 
 function Meow(hostname, port, database) {
   this.hostname = hostname;
@@ -30,11 +31,6 @@ Meow.prototype.createTables = function createTables() {
   const client = this.client;
   let query = null;
 
-  const validContrains = [
-    '#primary_key',
-    '#autoincrement',
-  ];
-
   // First level of JSON are tables.
   Object.keys(schema).forEach((tableKey) => {
     const tableItems = [];
@@ -44,8 +40,8 @@ Meow.prototype.createTables = function createTables() {
       // Check if key is a constrain.
       const fieldValue = schema[tableKey][fieldKey];
       if (fieldKey[0] === '#') {
-        // If not valid contrain, pass iteration.
-        if (validContrains.indexOf(fieldKey) < 0) { return; }
+        // If key has case, do special constrain line.
+        // Otherwise throw exception.
         switch (fieldKey) {
           case '#autoincrement':
             tableItems.push(`${fieldValue} BIGSERIAL`);
@@ -54,6 +50,7 @@ Meow.prototype.createTables = function createTables() {
             tableItems.push(`PRIMARY KEY (${fieldValue.join(', ')})`);
             break;
           default:
+            throw new Error(`Contrain "${fieldKey}" defined, but it's not valid.`);
         }
       } else {
         tableItems.push(`${fieldKey} ${fieldValue}`);
