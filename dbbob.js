@@ -2,7 +2,7 @@ const fs = require('fs');
 const pg = require('pg');
 const console = require('console');
 
-function Meow(hostname, port, database) {
+function DBBob(hostname, port, database) {
   this.hostname = hostname;
   this.port = port;
   this.database = database;
@@ -10,7 +10,7 @@ function Meow(hostname, port, database) {
   this.client = null;
 }
 
-Meow.prototype.init = function init(schema) {
+DBBob.prototype.init = function init(schema) {
   const schemaUrl = (schema !== undefined && typeof schema === 'string') ? schema : 'schema.json';
 
   if (fs.existsSync(schemaUrl)) {
@@ -18,11 +18,11 @@ Meow.prototype.init = function init(schema) {
   }
 };
 
-Meow.prototype.getSchema = function getSchema() {
+DBBob.prototype.getSchema = function getSchema() {
   console.log(this.schema);
 };
 
-Meow.prototype.createTables = function createTables() {
+DBBob.prototype.createTables = function createTables() {
   const connectionString = `postgres://${this.hostname}:${this.port}/${this.database}`;
   this.client = new pg.Client(connectionString);
   this.client.connect();
@@ -65,4 +65,4 @@ Meow.prototype.createTables = function createTables() {
   query.on('end', () => { client.end(); });
 };
 
-module.exports = Meow;
+module.exports = DBBob;
