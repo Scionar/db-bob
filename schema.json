@@ -1,11 +1,11 @@
 {
   "account" : {
-    "uid" : "integer",
+    "#autoincrement" : "uid",
     "username": "text",
     "firstname": "text",
     "lastname": "text",
     "created": "date",
-    "#primary_key" : ["uid", "created"]
+    "#primary_key" : ["uid"]
   },
   "posts" : {
     "id" : "integer",

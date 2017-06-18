@@ -32,6 +32,7 @@ Meow.prototype.createTables = function createTables() {
 
   const validContrains = [
     '#primary_key',
+    '#autoincrement',
   ];
 
   // First level of JSON are tables.
@@ -41,16 +42,21 @@ Meow.prototype.createTables = function createTables() {
     // Second level of JSON is field definitions.
     Object.keys(schema[tableKey]).forEach((fieldKey) => {
       // Check if key is a constrain.
+      const fieldValue = schema[tableKey][fieldKey];
       if (fieldKey[0] === '#') {
-        if (validContrains.indexOf(fieldKey)) { return; } // If not valid contrain, pass iteration.
+        // If not valid contrain, pass iteration.
+        if (validContrains.indexOf(fieldKey) < 0) { return; }
         switch (fieldKey) {
+          case '#autoincrement':
+            tableItems.push(`${fieldValue} BIGSERIAL`);
+            break;
           case '#primary_key':
-            tableItems.push(`PRIMARY KEY (${schema[tableKey][fieldKey].join(', ')})`);
+            tableItems.push(`PRIMARY KEY (${fieldValue.join(', ')})`);
             break;
           default:
         }
       } else {
-        tableItems.push(`${fieldKey} ${schema[tableKey][fieldKey]}`);
+        tableItems.push(`${fieldKey} ${fieldValue}`);
       }
     });
 
