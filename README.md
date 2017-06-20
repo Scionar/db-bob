@@ -6,12 +6,14 @@ DB Bob is relation SQL database builder and validator. Database structure is con
 ```javascript
 const DBBob = require('./dbbob.js');
 
-const db = new DBBob('localhost', '5432', 'exampledb');
+const db = new DBBob('postgresql', 'localhost', '5432', 'exampledb');
 db.init('schema.json');
 db.createTables();
 ```
 
-DBBob instance takes three parameters: host, port number and database name. Init method takes name schema file url. default this is `schema.json` which searches schema.json from repository root.
+DBBob instance takes three parameters: driver, host, port number and database name. At the moment only created driver is `postgresql`.
+
+Init method takes name schema file url. default this is `schema.json` which searches schema.json from repository root.
 
 CreateTables method reads JSON structure and creates database structure.
 
