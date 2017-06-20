@@ -29,14 +29,12 @@ DBBob.prototype.createTables = function createTables() {
 
   const schema = this.schema;
   const client = this.client;
-  let query = null;
+  const queryList = [];
 
   // First level of JSON are tables.
   Object.keys(schema).forEach((tableKey) => {
-    const tableItems = [];
-
     // Second level of JSON is field definitions.
-    Object.keys(schema[tableKey]).forEach((fieldKey) => {
+    const tableItems = Object.keys(schema[tableKey]).reduce((initial, fieldKey) => {
       // Check if key is a constrain.
       const fieldValue = schema[tableKey][fieldKey];
       if (fieldKey[0] === '#') {
@@ -44,25 +42,32 @@ DBBob.prototype.createTables = function createTables() {
         // Otherwise throw exception.
         switch (fieldKey) {
           case '#autoincrement':
-            tableItems.push(`${fieldValue} BIGSERIAL`);
+            initial.push(`${fieldValue} BIGSERIAL`);
             break;
           case '#primary_key':
-            tableItems.push(`PRIMARY KEY (${fieldValue.join(', ')})`);
+            initial.push(`PRIMARY KEY (${fieldValue.join(', ')})`);
             break;
           default:
             throw new Error(`Contrain "${fieldKey}" defined, but it's not valid.`);
         }
       } else {
-        tableItems.push(`${fieldKey} ${fieldValue}`);
+        initial.push(`${fieldKey} ${fieldValue}`);
       }
-    });
+      return initial;
+    }, []);
 
-    const queryString = `CREATE TABLE IF NOT EXISTS ${tableKey} (${tableItems.join(', ')})`;
-    console.log(queryString);
-    query = client.query(queryString);
+    queryList.push(`CREATE TABLE IF NOT EXISTS ${tableKey} (${tableItems.join(', ')})`);
   });
 
-  query.on('end', () => { client.end(); });
+  // Execute all query lines.
+  queryList.forEach((queryLine) => {
+    console.log(queryLine);
+    client.query(queryLine);
+  });
+};
+
+DBBob.prototype.end = function end() {
+  this.client.end();
 };
 
 module.exports = DBBob;
