@@ -1,5 +1,4 @@
 const fs = require('fs');
-const pg = require('pg');
 const driverSupport = require('./drivers');
 const console = require('console');
 
@@ -20,16 +19,11 @@ DBBob.prototype.init = function init(schema) {
   }
 };
 
-DBBob.prototype.getSchema = function getSchema() {
-  console.log(this.schema);
-};
-
 DBBob.prototype.createTables = function createTables() {
   this.client = this.driver.initClient(this.hostname, this.port, this.database);
   this.driver.connect(this.client);
 
   const schema = this.schema;
-  const client = this.client;
   const queryList = [];
 
   // First level of JSON are tables.
@@ -43,10 +37,10 @@ DBBob.prototype.createTables = function createTables() {
         // Otherwise throw exception.
         switch (fieldKey) {
           case '#autoincrement':
-            initial.push(`${fieldValue} BIGSERIAL`);
+            initial.push(this.driver.constrainAutoincrement(fieldValue));
             break;
           case '#primary_key':
-            initial.push(`PRIMARY KEY (${fieldValue.join(', ')})`);
+            initial.push(this.driver.constainPrimaryKey(fieldValue));
             break;
           default:
             throw new Error(`Contrain "${fieldKey}" defined, but it's not valid.`);
@@ -61,16 +55,7 @@ DBBob.prototype.createTables = function createTables() {
   });
 
   // Execute all query lines.
-  let query = null;
-  queryList.forEach((queryLine) => {
-    console.log(queryLine);
-    query = client.query(queryLine);
-  });
-  query.on('end', () => { client.end(); });
-};
-
-DBBob.prototype.end = function end() {
-  this.client.end();
+  this.driver.query(this.client, queryList, true);
 };
 
 module.exports = DBBob;
