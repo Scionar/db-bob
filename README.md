@@ -1,17 +1,17 @@
 # DB Bob
 
-DB Bob is relation SQL database builder and validator. Database structure is configured with easy JSON structure. First support is coming for PostgreSQL and idea is also to unify database building. This project is ideal to use with task runner.
+DB Bob is relation SQL database builder and validator. Database structure is configured with easy JSON structure. Support has been build for MySQL and PostgreSQL. This project is ideal to use with task runner.
 
 ## How to run
 ```javascript
 const DBBob = require('./dbbob.js');
 
-const db = new DBBob('postgresql', 'localhost', '5432', 'exampledb');
+const db = new DBBob('postgresql', 'localhost', '5432', 'exampledb', 'username', 'p4ssword');
 db.init('schema.json');
 db.createTables();
 ```
 
-DBBob instance takes three parameters: driver, host, port number and database name. At the moment only created driver is `postgresql`.
+DBBob instance takes six parameters: driver, host, port number, database name, username and password. Driver can be 'postgresql' or 'mysql'.
 
 Init method takes name schema file url. default this is `schema.json` which searches schema.json from repository root.
 

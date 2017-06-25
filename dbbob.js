@@ -2,13 +2,15 @@ const fs = require('fs');
 const driverSupport = require('./drivers');
 const console = require('console');
 
-function DBBob(driverName, hostname, port, database) {
+function DBBob(driverName, hostname, port, database, user, password) {
   this.hostname = hostname;
   this.port = port;
   this.database = database;
   this.schema = null;
   this.client = null;
   this.driver = driverSupport[driverName];
+  this.user = user;
+  this.password = password;
 }
 
 DBBob.prototype.init = function init(schema) {
@@ -20,7 +22,7 @@ DBBob.prototype.init = function init(schema) {
 };
 
 DBBob.prototype.createTables = function createTables() {
-  this.client = this.driver.initClient(this.hostname, this.port, this.database);
+  this.client = this.driver.initClient(this.hostname, this.port, this.database, this.user, this.password);
   this.driver.connect(this.client);
 
   const schema = this.schema;
