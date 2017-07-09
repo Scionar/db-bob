@@ -2,20 +2,22 @@
   "name": "DBBob",
   "version": "1.0.0",
   "description": "Manage realtion SQL database structure with JSON.",
-  "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Scionar/dbbob.git"
+    "url": "git+https://github.com/Scionar/db-bob.git"
   },
   "author": {
     "name": "Joona Viertola",
     "url": "http://www.joonaviertola.com/"
   },
+  "files": [
+    "index.js"
+  ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Scionar/dbbob/issues"
+    "url": "https://github.com/Scionar/db-bob/issues"
   },
-  "homepage": "https://github.com/Scionar/dbbob#readme",
+  "homepage": "https://github.com/Scionar/db-bob#readme",
   "dependencies": {
     "mysql": "^2.13.0",
     "pg": "^6.2.4"
