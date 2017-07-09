@@ -1,27 +1,27 @@
 {
-  "name": "json-relation-sql-model",
+  "name": "DBBob",
   "version": "1.0.0",
-  "description": "todo: Better name",
+  "description": "Manage realtion SQL database structure with JSON.",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Scionar/json-relation-sql-model.git"
+    "url": "git+https://github.com/Scionar/dbbob.git"
   },
-  "author": "",
+  "author": {
+    "name": "Joona Viertola",
+    "url": "http://www.joonaviertola.com/"
+  },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Scionar/json-relation-sql-model/issues"
+    "url": "https://github.com/Scionar/dbbob/issues"
   },
-  "homepage": "https://github.com/Scionar/json-relation-sql-model#readme",
+  "homepage": "https://github.com/Scionar/dbbob#readme",
   "dependencies": {
-    "babel-eslint": "^7.2.3",
     "mysql": "^2.13.0",
     "pg": "^6.2.4"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-import": "^2.3.0",
