@@ -1,5 +1,6 @@
-const fs = require('fs');
+const console = require('console');
 const driverSupport = require('./drivers');
+const fs = require('fs');
 const path = require('path');
 
 /**
@@ -81,8 +82,11 @@ DBBob.prototype.createTables = function createTables() {
     queryList.push(this.driver.sqlCreateTable(tableKey, tableItems));
   });
 
-  // Execute all query lines.
-  this.driver.query(this.client, queryList, true);
+  // Use of async/await for log.
+  (async (driver, client) => {
+    const amount = await driver.query(client, queryList, true);
+    console.log(`${amount} create table queries executed.`);
+  })(this.driver, this.client);
 };
 
 module.exports = DBBob;

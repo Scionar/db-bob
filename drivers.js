@@ -1,5 +1,6 @@
 const pg = require('pg');
 const mysql = require('mysql');
+const console = require('console');
 
 module.exports.postgresql = {
   initClient: function initClient(params) {
@@ -17,14 +18,14 @@ module.exports.postgresql = {
   },
   query: function query(client, queryList, disconnect = false) {
     let result = null;
-    if (Array.isArray(queryList)) {
-      result = client.query(queryList.join(';'));
-    } else if (typeof queryList === 'string') {
-      client.query(queryList);
-    }
+    const queries = [].concat(queryList);
+    result = client.query(queries.join(';'), (e) => {
+      if (e) throw new Error(`Error in query execute:\n${e}`);
+    });
     if (disconnect) {
       result.on('end', () => { client.end(); });
     }
+    return queries.length;
   },
   sqlColumn: function sqlColumn(columnName, columnType) {
     return `${columnName} ${columnType}`;
@@ -56,16 +57,16 @@ module.exports.mysql = {
   },
   query: function query(client, queryList, disconnect = false) {
     let result = null;
-    if (Array.isArray(queryList)) {
-      queryList.forEach((sqlLine) => {
-        result = client.query(sqlLine);
+    const queries = [].concat(queryList);
+    queries.forEach((sqlLine) => {
+      result = client.query(sqlLine, (e) => {
+        if (e) throw new Error(`Error in query execute:\n${e}`);
       });
-    } else if (typeof queryList === 'string') {
-      result = client.query(queryList);
-    }
+    });
     if (disconnect) {
       result.on('end', () => { client.end(); });
     }
+    return queries.length;
   },
   sqlColumn: function sqlColumn(columnName, columnType) {
     return `${columnName} ${columnType}`;
