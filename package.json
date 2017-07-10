@@ -19,11 +19,11 @@
   },
   "homepage": "https://github.com/Scionar/db-bob#readme",
   "dependencies": {
+    "babel-eslint": "^7.2.3",
     "mysql": "^2.13.0",
     "pg": "^6.2.4"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-import": "^2.3.0",

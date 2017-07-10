@@ -1,15 +1,15 @@
 const fs = require('fs');
 const driverSupport = require('./drivers');
 
-function DBBob(driverName, hostname, port, database, user, password) {
-  this.hostname = hostname;
-  this.port = port;
-  this.database = database;
-  this.schema = null;
+function DBBob(driverName, hostname, port, database, user, password, schema) {
+  this.hostname = hostname || null;
+  this.port = port || null;
+  this.database = database || null;
+  this.schema = schema || 'schema.json';
   this.client = null;
-  this.driver = driverSupport[driverName];
-  this.user = user;
-  this.password = password;
+  this.driver = driverName ? driverSupport[driverName] : null;
+  this.user = user || null;
+  this.password = password || null;
 }
 
 DBBob.prototype.init = function init(schema) {
