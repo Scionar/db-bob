@@ -1,15 +1,27 @@
 const fs = require('fs');
 const driverSupport = require('./drivers');
 
-function DBBob(driverName, hostname, port, database, user, password, schema) {
-  this.hostname = hostname || null;
-  this.port = port || null;
-  this.database = database || null;
-  this.schema = schema || 'schema.json';
+/**
+ * Creates DB Bob instance.
+ * @class
+ * @param {Object} params - Parameter object
+ * @param {string} params.hostname - Database server hostname.
+ * @param {string} params.port - Database server port.
+ * @param {string} params.database - Database name in server.
+ * @param {string} params.driver - Database server driver.
+ * @param {string} params.user - Database server username.
+ * @param {string} params.password - Database server user password.
+ * @param {string} [params.schema] - JSON database schema.
+ */
+function DBBob(params) {
   this.client = null;
-  this.driver = driverName ? driverSupport[driverName] : null;
-  this.user = user || null;
-  this.password = password || null;
+  this.hostname = params.hostname || null;
+  this.port = params.port || null;
+  this.database = params.database || null;
+  this.schema = params.schema || 'schema.json';
+  this.driver = params.driverName ? driverSupport[params.driverName] : null;
+  this.user = params.user || null;
+  this.password = params.password || null;
 }
 
 DBBob.prototype.init = function init(schema) {
@@ -21,13 +33,13 @@ DBBob.prototype.init = function init(schema) {
 };
 
 DBBob.prototype.createTables = function createTables() {
-  this.client = this.driver.initClient(
-    this.hostname,
-    this.port,
-    this.database,
-    this.user,
-    this.password,
-  );
+  this.client = this.driver.initClient({
+    hostname: this.hostname,
+    port: this.port,
+    database: this.database,
+    user: this.user,
+    password: this.password,
+  });
   this.driver.connect(this.client);
 
   const schema = this.schema;

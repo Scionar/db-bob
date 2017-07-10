@@ -2,13 +2,13 @@ const pg = require('pg');
 const mysql = require('mysql');
 
 module.exports.postgresql = {
-  initClient: function initClient(host, port, database, user = undefined, password = undefined) {
+  initClient: function initClient(params) {
     const connectionString = {
-      user,
-      database,
-      password,
-      host,
-      port,
+      user: params.user || null,
+      database: params.database || null,
+      password: params.password || null,
+      host: params.hostname || null,
+      port: params.port || null,
     };
     return new pg.Client(connectionString);
   },
@@ -42,13 +42,13 @@ module.exports.postgresql = {
 };
 
 module.exports.mysql = {
-  initClient: function initClient(host, port, database, user, password) {
+  initClient: function initClient(params) {
     return mysql.createConnection({
-      host,
-      port,
-      user,
-      password,
-      database,
+      host: params.hostname || null,
+      port: params.port || null,
+      user: params.user || null,
+      password: params.password || null,
+      database: params.database || null,
     });
   },
   connect: function connect(client) {
