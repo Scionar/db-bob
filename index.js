@@ -1,5 +1,6 @@
 const fs = require('fs');
 const driverSupport = require('./drivers');
+const path = require('path');
 
 /**
  * Creates DB Bob instance.
@@ -11,26 +12,33 @@ const driverSupport = require('./drivers');
  * @param {string} params.driver - Database server driver.
  * @param {string} params.user - Database server username.
  * @param {string} params.password - Database server user password.
- * @param {string} [params.schema] - JSON database schema.
+ * @param {string} params.schemaUrl - JSON database schema URL.
  */
 function DBBob(params) {
   this.client = null;
   this.hostname = params.hostname || null;
   this.port = params.port || null;
   this.database = params.database || null;
-  this.schema = params.schema || 'schema.json';
-  this.driver = params.driverName ? driverSupport[params.driverName] : null;
+  this.schema = null;
+  this.driver = params.driver ? driverSupport[params.driver] : null;
   this.user = params.user || null;
   this.password = params.password || null;
-}
 
-DBBob.prototype.init = function init(schema) {
-  const schemaUrl = (schema !== undefined && typeof schema === 'string') ? schema : 'schema.json';
-
+  // Schema file exists?
+  const schemaUrl = params.schemaUrl || 'schema.json';
   if (fs.existsSync(schemaUrl)) {
-    this.schema = JSON.parse(fs.readFileSync(schemaUrl, 'utf8'));
+    const schemaPath = path.resolve(__dirname, params.schemaUrl);
+    const fileContent = fs.readFileSync(schemaPath, 'utf8');
+    // Try to parse file content.
+    try {
+      this.schema = JSON.parse(fileContent);
+    } catch (e) {
+      throw new Error(`Error while parsing JSON file content:\n${e}`);
+    }
+  } else {
+    throw new Error(`Schema file not found in ${params.schemaUrl}`);
   }
-};
+}
 
 DBBob.prototype.createTables = function createTables() {
   this.client = this.driver.initClient({

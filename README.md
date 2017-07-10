@@ -13,14 +13,12 @@ const db = new DBBob({
   database: 'exampledb',
   user: 'username',
   password: 'p4ssword'
+  schemaUrl: 'schema.json'
 });
-db.init('schema.json');
 db.createTables();
 ```
 
-DBBob instance takes six parameters: driver, host, port number, database name, username and password. Driver can be 'postgresql' or 'mysql'.
-
-Init method takes name schema file url. default this is `schema.json` which searches schema.json from repository root.
+DBBob instance takes six parameters: driver, host, port number, database name, username, password and schemaUrl. Driver can be 'postgresql' or 'mysql'. SchemaUrl parameter is relative path to schema file. Default schemaUrl is `schema.json`.
 
 CreateTables method reads JSON structure and creates database structure.
 
