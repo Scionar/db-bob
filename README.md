@@ -38,7 +38,13 @@ JSON should be 2 dimensional structure. First dimension names are table names. E
   },
   "posts" : {
     "id" : "integer",
-    "content" : "text"
+    "content" : "text",
+    "account": "integer",
+    "#reference": {
+      "key": "account",
+      "table": "account",
+      "column": "uid"
+    }
   }
 }
 ```
@@ -57,4 +63,14 @@ In example above we have:
 
 - **primary_key**
 
-  Defines primary key. Value is an array be cause there can be multiple columns used for primary key. PostgreSQL creates primary key *tablename_pkey*.
+  Defines primary key. Value is an array because there can be multiple columns used for primary key. PostgreSQL creates primary key *tablename_pkey*.
+
+- **reference**
+
+  Defines foreign key. Value is an object. Object should have three properties:
+
+  * key
+  * table
+  * column (optional)
+
+  Key is name of the foreign key in current table. Table is name of the target table. Optional column specifies target table's column.

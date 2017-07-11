@@ -83,6 +83,9 @@ DBBob.prototype.createTables = function createTables() {
           case '#primary_key':
             initial.push(this.driver.constainPrimaryKey(fieldValue));
             break;
+          case '#reference':
+            initial.push(this.driver.constainReference(fieldValue));
+            break;
           default:
             throw new Error(`Contrain "${fieldKey}" defined, but it's not valid.`);
         }
@@ -98,6 +101,7 @@ DBBob.prototype.createTables = function createTables() {
   // Use of async/await for log.
   (async (driver, client) => {
     const amount = await driver.query(client, queryList, true);
+    console.log(queryList.join('\n'));
     console.log(`${amount} create table queries executed.`);
   })(this.driver, this.client);
 };
