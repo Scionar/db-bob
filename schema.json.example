@@ -9,6 +9,12 @@
   },
   "posts" : {
     "id" : "integer",
-    "content" : "text"
+    "content" : "text",
+    "account": "integer",
+    "#reference": {
+      "key": "account",
+      "table": "account",
+      "column": "uid"
+    }
   }
 }

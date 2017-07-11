@@ -39,4 +39,10 @@ module.exports = {
   constainPrimaryKey: function constainPrimaryKey(columnName) {
     return `PRIMARY KEY (${columnName.join(', ')})`;
   },
+  constainReference: function constainPrimaryKey(refValue) {
+    if (typeof refValue.column !== 'undefined') {
+      return `FOREIGN KEY (${refValue.key}) REFERENCES ${refValue.table} (${refValue.column})`;
+    }
+    return `FOREIGN KEY (${refValue.key}) REFERENCES ${refValue.table}`;
+  },
 };
