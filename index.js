@@ -1,7 +1,8 @@
 const console = require('console');
-const driverSupport = require('./drivers');
 const fs = require('fs');
 const path = require('path');
+const postgresqlDriver = require('./drivers/postgresql');
+const mysqlDriver = require('./drivers/mysql');
 
 /**
  * Creates DB Bob instance.
@@ -21,7 +22,7 @@ function DBBob(params) {
   this.port = params.port || null;
   this.database = params.database || null;
   this.schema = null;
-  this.driver = params.driver ? driverSupport[params.driver] : null;
+  this.driver = null;
   this.user = params.user || null;
   this.password = params.password || null;
 
@@ -38,6 +39,18 @@ function DBBob(params) {
     }
   } else {
     throw new Error(`Schema file not found in ${params.schemaUrl}`);
+  }
+
+  // Set driver.
+  switch (params.driver) {
+    case 'postgresql':
+      this.driver = postgresqlDriver;
+      break;
+    case 'mysql':
+      this.driver = mysqlDriver;
+      break;
+    default:
+      throw new Error(`Driver '${params.driver}' not found.`);
   }
 }
 
