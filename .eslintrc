@@ -8,6 +8,8 @@
     "mocha": true
   },
   "rules": {
+    "prefer-arrow-callback": "off",
+    "func-names": "off",
     "valid-jsdoc": ["error", {
       "requireReturn": true,
       "requireReturnType": true,
